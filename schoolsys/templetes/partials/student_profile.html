@@ -1,0 +1,207 @@
+<!-- FILE: student_profile.html -->
+{% extends "partials/base.html" %}
+{% block title %}Student Profile{% endblock %}
+
+{% block content %}
+<style>
+:root{
+  --primary:#1e3a8a;
+  --secondary:#0ea5e9;
+  --accent:#16a34a;
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --text:#0f172a;
+  --muted:#64748b;
+}
+.erp-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:.6rem;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.label{
+  color:var(--muted);
+  font-size:.8rem;
+  white-space:nowrap;
+}
+.value{
+  font-weight:600;
+  color:var(--text);
+  font-size:.9rem;
+}
+.passport{
+  width:120px;
+  height:150px;
+  object-fit:cover;
+  border:1px solid var(--border);
+  border-radius:.4rem;
+}
+.badge-status{
+  background:rgba(22,163,74,.12);
+  color:var(--accent);
+  font-weight:600;
+}
+.table-bio td{
+  padding:.4rem .6rem;
+  vertical-align:top;
+}
+.table-bio tr td:nth-child(odd){
+  width:18%;
+}
+.action-btn{
+  padding:.35rem .6rem;
+  font-size:.8rem;
+}
+</style>
+
+<div class="container-fluid">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <nav class="small text-muted mb-1">Home / Students / Profile</nav>
+      <h5 class="mb-0 fw-bold">STUDENT PROFILE</h5>
+      <div class="small text-muted">Amina Nakitende • ADM-0142</div>
+    </div>
+    <div class="d-none d-md-flex gap-1">
+      <button class="btn btn-outline-primary action-btn"><i class="bi bi-file-earmark-text"></i> Report Card</button>
+      <button class="btn btn-outline-primary action-btn"><i class="bi bi-cash-stack"></i> Fees Ledger</button>
+      <button class="btn btn-outline-primary action-btn"><i class="bi bi-shield-exclamation"></i> Discipline</button>
+      <button class="btn btn-outline-primary action-btn"><i class="bi bi-printer"></i> Print</button>
+    </div>
+    <div class="dropdown d-md-none">
+      <button class="btn btn-outline-primary dropdown-toggle action-btn" data-bs-toggle="dropdown">Actions</button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Report Card</a></li>
+        <li><a class="dropdown-item" href="#">Fees Ledger</a></li>
+        <li><a class="dropdown-item" href="#">Discipline</a></li>
+        <li><a class="dropdown-item" href="#">Print</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-3">
+      <div class="erp-card p-2">
+        <div class="d-flex gap-2">
+          <img src="https://via.placeholder.com/150x200" class="passport" alt="">
+          <div>
+            <div class="fw-bold">Amina Nakitende</div>
+            <div class="small text-muted">ADM-0142</div>
+            <div class="small">S2 • Blue</div>
+            <span class="badge badge-status mt-1">Active</span>
+          </div>
+        </div>
+        <hr class="my-2">
+        <div class="small"><span class="label">Admitted:</span> <span class="value">10 Feb 2023</span></div>
+        <div class="small"><span class="label">Residence:</span> <span class="value">Boarding</span></div>
+        <div class="small"><span class="label">Hostel:</span> <span class="value">St. Mary</span></div>
+      </div>
+
+      <div class="erp-card p-2 mt-3">
+        <div class="fw-bold small mb-2">Quick Links</div>
+        <button class="btn btn-outline-primary w-100 mb-1 action-btn"><i class="bi bi-calendar-check"></i> Attendance</button>
+        <button class="btn btn-outline-primary w-100 mb-1 action-btn"><i class="bi bi-journal-text"></i> Academics</button>
+        <button class="btn btn-outline-primary w-100 mb-1 action-btn"><i class="bi bi-cash"></i> Fees</button>
+        <button class="btn btn-outline-primary w-100 action-btn"><i class="bi bi-exclamation-octagon"></i> Discipline</button>
+      </div>
+    </div>
+
+    <div class="col-lg-9">
+      <div class="erp-card p-2 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="fw-bold small">Student Bio-Data</div>
+          <button class="btn btn-sm btn-outline-primary action-btn"><i class="bi bi-pencil"></i> Edit Info</button>
+        </div>
+        <table class="table table-sm table-borderless table-bio mb-0">
+          <tr>
+            <td class="label">Full Name</td><td class="value">Amina Nakitende</td>
+            <td class="label">Gender</td><td class="value">Female</td>
+          </tr>
+          <tr>
+            <td class="label">Date of Birth</td><td class="value">12 Mar 2010</td>
+            <td class="label">Age</td><td class="value">14</td>
+          </tr>
+          <tr>
+            <td class="label">Nationality</td><td class="value">Ugandan</td>
+            <td class="label">Religion</td><td class="value">Islam</td>
+          </tr>
+          <tr>
+            <td class="label">Address</td><td class="value">Kampala / Central</td>
+            <td class="label">UNEB Index</td><td class="value">-</td>
+          </tr>
+          <tr>
+            <td class="label">Combination</td><td class="value">PCM</td>
+            <td class="label">Student Type</td><td class="value">Boarding</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="erp-card p-2">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="fw-bold small">Parents / Guardians</div>
+          <div>
+            <button class="btn btn-sm btn-outline-primary action-btn"><i class="bi bi-pencil"></i> Edit Parent</button>
+            <button class="btn btn-sm btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#guardianModal">
+              <i class="bi bi-plus"></i> Add Guardian
+            </button>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="erp-card p-2 h-100">
+              <div class="fw-semibold small">Okello John</div>
+              <div class="small text-muted">Father</div>
+              <div class="small">Phone: <strong>+256 772 123456</strong></div>
+              <div class="small">Alt: <strong>+256 701 445566</strong></div>
+              <div class="small">Email: <strong>-</strong></div>
+              <div class="small">Address: <strong>Kampala</strong></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="erp-card p-2 h-100">
+              <div class="fw-semibold small">Namusoke Sarah</div>
+              <div class="small text-muted">Mother</div>
+              <div class="small">Phone: <strong>+256 784 998877</strong></div>
+              <div class="small">Alt: <strong>-</strong></div>
+              <div class="small">Email: <strong>parent@email.com</strong></div>
+              <div class="small">Address: <strong>Kampala</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="guardianModal" tabindex="-1">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title">Add Guardian</h6>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form class="small">
+          <input class="form-control form-control-sm mb-2" placeholder="Parent Name">
+          <input class="form-control form-control-sm mb-2" placeholder="Relationship">
+          <input class="form-control form-control-sm mb-2" placeholder="Gender">
+          <input class="form-control form-control-sm mb-2" placeholder="Phone">
+          <input class="form-control form-control-sm mb-2" placeholder="Email">
+          <textarea class="form-control form-control-sm" placeholder="Address"></textarea>
+        </form>
+      </div>
+      <div class="modal-footer py-2">
+        <button class="btn btn-sm btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-sm btn-primary" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

@@ -1,0 +1,525 @@
+<!-- FILE 2: dashboard.html -->
+{% extends "partials/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block nav_dashboard_active %}active{% endblock %}
+
+{% block layout %}
+<div class="container-fluid">
+
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div>
+      <h1 class="page-title mb-1">Dashboard</h1>
+      <div class="muted">Overview of key school metrics</div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-primary rounded-pill"><i class="bi bi-download"></i><span class="ms-2">Export</span></button>
+      <button class="btn btn-primary rounded-pill soft-shadow"><i class="bi bi-plus-circle"></i><span class="ms-2">Quick Add</span></button>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card soft-shadow rounded-xl stat-card border-0" style="border-top: 4px solid var(--primary) !important;">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="muted fw-semibold">Total Students</div>
+            <div class="display-6 fw-extrabold mb-0">{{ total_students }}</div>
+            <div class="mt-2"><span class="badge badge-soft primary">
+            {% if growth_percent >= 0 %}
+              +{{ growth_percent }}%
+            {% else %}
+              {{ growth_percent }}%
+            {% endif %} this term</span></div>
+          </div>
+          <div class="icon-pill" style="background: rgba(30,58,138,.10); border-color: rgba(30,58,138,.20);">
+            <i class="bi bi-people-fill fs-4" style="color: var(--primary);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card soft-shadow rounded-xl stat-card border-0" style="border-top: 4px solid var(--secondary) !important;">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="muted fw-semibold">Total Teachers</div>
+            <div class="display-6 fw-extrabold mb-0">{{ total_teachers }}</div>
+            <div class="mt-2"><span class="badge badge-soft secondary">Stable</span></div>
+          </div>
+          <div class="icon-pill" style="background: rgba(14,165,233,.12); border-color: rgba(14,165,233,.22);">
+            <i class="bi bi-person-badge-fill fs-4" style="color: var(--secondary);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card soft-shadow rounded-xl stat-card border-0" style="border-top: 4px solid var(--success) !important;">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="muted fw-semibold">Total Parents</div>
+            <div class="display-6 fw-extrabold mb-0">{{ total_parents }}</div>
+            <div class="mt-2"><span class="badge badge-soft success">Engaged</span></div>
+          </div>
+          <div class="icon-pill" style="background: rgba(22,163,74,.12); border-color: rgba(22,163,74,.22);">
+            <i class="bi bi-people fs-4" style="color: var(--success);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card soft-shadow rounded-xl stat-card border-0" style="border-top: 4px solid var(--success) !important;">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="muted fw-semibold">Fees Collected (Term)</div>
+            <div class="display-6 fw-extrabold mb-0">UGX 182.4M</div>
+            <div class="mt-2"><span class="badge badge-soft success">On track</span></div>
+          </div>
+          <div class="icon-pill" style="background: rgba(22,163,74,.12); border-color: rgba(22,163,74,.22);">
+            <i class="bi bi-cash-coin fs-4" style="color: var(--success);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card soft-shadow rounded-xl stat-card border-0" style="border-top: 4px solid var(--warning) !important;">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="muted fw-semibold">Outstanding Fees</div>
+            <div class="display-6 fw-extrabold mb-0">UGX 41.8M</div>
+            <div class="mt-2"><span class="badge badge-soft warning">Needs follow-up</span></div>
+          </div>
+          <div class="icon-pill" style="background: rgba(245,158,11,.14); border-color: rgba(245,158,11,.22);">
+            <i class="bi bi-exclamation-triangle-fill fs-4" style="color: #b45309;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card soft-shadow rounded-xl stat-card border-0" style="border-top: 4px solid var(--danger) !important;">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="muted fw-semibold">Discipline Cases</div>
+            <div class="display-6 fw-extrabold mb-0">12</div>
+            <div class="mt-2"><span class="badge badge-soft danger">Review required</span></div>
+          </div>
+          <div class="icon-pill" style="background: rgba(220,38,38,.12); border-color: rgba(220,38,38,.22);">
+            <i class="bi bi-shield-exclamation fs-4" style="color: var(--danger);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-12 col-xl-6">
+      <div class="card soft-shadow rounded-xl h-100">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Students per Class</div>
+          <span class="badge badge-soft primary">Bar</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartStudentsPerClass" height="140"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card soft-shadow rounded-xl h-100">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Attendance Trend (14 days)</div>
+          <span class="badge badge-soft secondary">Line</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartAttendanceTrend" height="140"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-8">
+      <div class="card soft-shadow rounded-xl h-100">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Fees Expected vs Collected</div>
+          <span class="badge badge-soft success">Combo</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartFeesCombo" height="130"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="card soft-shadow rounded-xl h-100">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Gender Distribution</div>
+          <span class="badge badge-soft warning">Doughnut</span>
+        </div>
+        <div class="card-body">
+          <canvas id="chartGender" height="180"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-xl-4">
+      <div class="card soft-shadow rounded-xl" style="height: 360px;">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Recent Admissions</div>
+          <span class="badge badge-soft primary">New</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush" style="max-height: 304px; overflow: auto;">
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Amina N.</div>
+                <div class="muted small">S2 • Blue Stream</div>
+              </div>
+              <span class="badge badge-soft secondary">Today</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Brian K.</div>
+                <div class="muted small">P7 • Red Stream</div>
+              </div>
+              <span class="badge badge-soft secondary">Yesterday</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Christine A.</div>
+                <div class="muted small">S1 • Green Stream</div>
+              </div>
+              <span class="badge badge-soft secondary">2 days</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Derrick M.</div>
+                <div class="muted small">P5 • Blue Stream</div>
+              </div>
+              <span class="badge badge-soft secondary">3 days</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Esther S.</div>
+                <div class="muted small">S3 • Yellow Stream</div>
+              </div>
+              <span class="badge badge-soft secondary">4 days</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Felix O.</div>
+                <div class="muted small">P4 • Red Stream</div>
+              </div>
+              <span class="badge badge-soft secondary">5 days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="card soft-shadow rounded-xl" style="height: 360px;">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Recent Payments</div>
+          <span class="badge badge-soft success">Fees</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush" style="max-height: 304px; overflow: auto;">
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">UGX 650,000</div>
+                <div class="muted small">ADM-0142 • Mobile Money</div>
+              </div>
+              <span class="badge badge-soft success">Completed</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">UGX 400,000</div>
+                <div class="muted small">ADM-1033 • Bank</div>
+              </div>
+              <span class="badge badge-soft success">Completed</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">UGX 250,000</div>
+                <div class="muted small">ADM-0821 • Cash</div>
+              </div>
+              <span class="badge badge-soft warning">Pending</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">UGX 900,000</div>
+                <div class="muted small">ADM-0220 • Bank</div>
+              </div>
+              <span class="badge badge-soft success">Completed</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">UGX 120,000</div>
+                <div class="muted small">ADM-0644 • Mobile Money</div>
+              </div>
+              <span class="badge badge-soft danger">Failed</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">UGX 300,000</div>
+                <div class="muted small">ADM-0119 • Cash</div>
+              </div>
+              <span class="badge badge-soft success">Completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="card soft-shadow rounded-xl" style="height: 360px;">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="fw-bold">Discipline Alerts</div>
+          <span class="badge badge-soft danger">Alerts</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="list-group list-group-flush" style="max-height: 304px; overflow: auto;">
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Late to class</div>
+                <div class="muted small">ADM-0191 • S2</div>
+              </div>
+              <span class="badge badge-soft warning">Medium</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Uniform violation</div>
+                <div class="muted small">ADM-0774 • P6</div>
+              </div>
+              <span class="badge badge-soft warning">Medium</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Fighting</div>
+                <div class="muted small">ADM-0023 • S3</div>
+              </div>
+              <span class="badge badge-soft danger">High</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Property damage</div>
+                <div class="muted small">ADM-0450 • S1</div>
+              </div>
+              <span class="badge badge-soft danger">High</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Bullying report</div>
+                <div class="muted small">ADM-0938 • P7</div>
+              </div>
+              <span class="badge badge-soft warning">Medium</span>
+            </div>
+            <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+              <div>
+                <div class="fw-semibold">Skipping prep</div>
+                <div class="muted small">ADM-0602 • S2</div>
+              </div>
+              <span class="badge badge-soft primary">Low</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function(){
+    const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const C = {
+      primary: cssVar('--primary'),
+      secondary: cssVar('--secondary'),
+      success: cssVar('--success'),
+      warning: cssVar('--warning'),
+      danger: cssVar('--danger'),
+      text: cssVar('--text'),
+      muted: cssVar('--muted'),
+      border: cssVar('--border')
+    };
+
+    const gridColor = 'rgba(2, 6, 23, .08)';
+
+    Chart.defaults.font.family = 'Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial';
+    Chart.defaults.color = C.muted;
+
+      const studentsCtx = document.getElementById('chartStudentsPerClass');
+
+  if (studentsCtx) {
+    fetch("{% url 'dashboards:students_per_class_data' %}")
+      .then(res => res.json())
+      .then(chartData => {
+        new Chart(studentsCtx, {
+          type: 'bar',
+          data: {
+            labels: chartData.labels,
+            datasets: [{
+              label: 'Students',
+              data: chartData.data,
+              backgroundColor: C.primary,
+              borderRadius: 10,
+              maxBarThickness: 44
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: C.muted } },
+              y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: C.muted } }
+            }
+          }
+        });
+      });
+  }
+
+    const attendanceCtx = document.getElementById('chartAttendanceTrend');
+    if(attendanceCtx){
+      const labels = Array.from({length: 14}, (_, i) => `Day ${i+1}`);
+      const data = [88, 90, 92, 91, 93, 94, 95, 93, 92, 94, 96, 97, 96, 98];
+      new Chart(attendanceCtx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Attendance %',
+            data,
+            borderColor: C.secondary,
+            backgroundColor: 'rgba(14,165,233,.16)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+            pointHoverRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { mode: 'index', intersect: false }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: C.muted } },
+            y: {
+              min: 80,
+              max: 100,
+              grid: { color: gridColor },
+              ticks: { color: C.muted, callback: (v) => v + '%' }
+            }
+          }
+        }
+      });
+    }
+
+    const feesCtx = document.getElementById('chartFeesCombo');
+    if(feesCtx){
+      new Chart(feesCtx, {
+        data: {
+          labels: ['Week 1','Week 2','Week 3','Week 4','Week 5','Week 6'],
+          datasets: [
+            {
+              type: 'bar',
+              label: 'Expected (UGX M)',
+              data: [40, 42, 38, 45, 44, 41],
+              backgroundColor: 'rgba(30,58,138,.85)',
+              borderRadius: 10,
+              maxBarThickness: 46
+            },
+            {
+              type: 'line',
+              label: 'Collected (UGX M)',
+              data: [32, 35, 34, 40, 37, 39],
+              borderColor: C.success,
+              backgroundColor: 'rgba(22,163,74,.14)',
+              fill: true,
+              tension: 0.35,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { usePointStyle: true, boxWidth: 10 }
+            },
+            tooltip: { mode: 'index', intersect: false }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: C.muted } },
+            y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: C.muted } }
+          }
+        }
+      });
+    }
+
+  const genderCtx = document.getElementById('chartGender');
+
+  if (genderCtx) {
+    fetch("{% url 'dashboards:students_gender_data' %}")
+      .then(res => res.json())
+      .then(chartData => {
+        new Chart(genderCtx, {
+          type: 'doughnut',
+          data: {
+            labels: chartData.labels,
+            datasets: [{
+              data: chartData.data,
+              backgroundColor: [C.primary, C.secondary],
+              borderColor: ['#ffffff', '#ffffff'],
+              borderWidth: 2,
+              hoverOffset: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  usePointStyle: true,
+                  boxWidth: 10
+                }
+              }
+            },
+            cutout: '65%'
+          }
+        });
+      });
+  }
+
+    document.querySelectorAll('.stat-card').forEach(function(card){
+      card.style.transition = 'transform .16s ease, box-shadow .16s ease';
+      card.addEventListener('mouseenter', function(){
+        card.style.transform = 'translateY(-3px)';
+        card.style.boxShadow = 'var(--shadow)';
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = 'translateY(0)';
+        card.style.boxShadow = 'var(--shadow-sm)';
+      });
+    });
+  })();
+</script>
+{% endblock %}

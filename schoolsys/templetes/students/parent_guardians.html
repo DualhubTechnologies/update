@@ -1,0 +1,203 @@
+{# templates/students/parent_guardians.html #}
+{% extends "partials/base.html" %}
+{% load static %}
+{% block layout %}
+
+<div class="container mt-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+      <h3 class="mb-0">Parents / Guardians</h3>
+      <small class="text-muted">
+        Student: <strong>{{ student.full_name }}</strong>
+      </small>
+    </div>
+        <div>
+
+      <a href="/students/studentDetails/" class="btn btn-secondary waves-effect waves-light me-4 text-white"><i
+          class="ti ti-user-plus me-1"></i><span class="d-none d-sm-inline-block">Back to Student List</span></a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGuardianModal">
+      <i class="fi fi-rr-plus"></i> Add Parent / Guardian
+    </button>
+        </div>
+
+
+  </div>
+
+  <hr>
+
+  <!-- Messages -->
+  {% if messages %}
+    {% for m in messages %}
+      <div class="alert alert-{{ m.tags }} mt-2">{{ m }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Guardians Table -->
+  <div class="card shadow-sm">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Contact Number</th>
+          <th>Relationship</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for g in student.guardians.all %}
+        <tr>
+          <td>{{ g.name }}</td>
+          <td>{{ g.contact_number }}</td>
+          <td>{{ g.relationship|default:"-" }}</td>
+          <td class="text-center">
+
+            <!-- Edit Button -->
+            <button
+              class="btn btn-sm btn-outline-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#editGuardianModal{{ g.id }}">
+              Edit
+            </button>
+
+            <!-- Delete Button -->
+            <button
+              class="btn btn-sm btn-outline-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteGuardianModal{{ g.id }}">
+              Delete
+            </button>
+
+          </td>
+        </tr>
+
+        <!-- ================= EDIT MODAL ================= -->
+        <div class="modal fade" id="editGuardianModal{{ g.id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+              <form method="POST" action="{% url 'students:parent_guardian_edit' g.id %}">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Parent / Guardian</h5>
+                  <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                  <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control"
+                           value="{{ g.name }}" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Contact Number</label>
+                    <input type="text" name="contact_number" class="form-control"
+                           value="{{ g.contact_number }}" required>
+                  </div>
+
+                  <div class="mb-0">
+                    <label class="form-label">Relationship</label>
+                    <input type="text" name="relationship" class="form-control"
+                           value="{{ g.relationship }}">
+                  </div>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button class="btn btn-primary">Save Changes</button>
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    Cancel
+                  </button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+        <!-- ================= END EDIT MODAL ================= -->
+
+        <!-- ================= DELETE MODAL ================= -->
+        <div class="modal fade" id="deleteGuardianModal{{ g.id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h5 class="modal-title">Delete Parent / Guardian</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body">
+                <p class="mb-1">Are you sure you want to delete:</p>
+                <strong>{{ g.name }}</strong>
+                <div class="text-muted small mt-1">
+                  {{ g.contact_number }}
+                  {% if g.relationship %} • {{ g.relationship }}{% endif %}
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <a href="{% url 'students:parent_guardian_delete' g.id %}"
+                   class="btn btn-danger">
+                  Delete
+                </a>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- ================= END DELETE MODAL ================= -->
+
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center text-muted py-4">
+            No parents / guardians added.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ================= ADD GUARDIAN MODAL ================= -->
+<div class="modal fade" id="addGuardianModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form method="POST" action="{% url 'students:parent_guardians' student.id %}">
+        {% csrf_token %}
+
+        <div class="modal-header">
+          <h5 class="modal-title">Add Parent / Guardian</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          {{ form.as_p }}
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- ================= END ADD MODAL ================= -->
+
+{% endblock %}

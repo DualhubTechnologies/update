@@ -1,0 +1,206 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block title %}Student Photo Search{% endblock %}
+
+{% block extra_head %}
+<style>
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 18px;
+  }
+
+  .toolbar { display:flex; gap:12px; align-items:flex-end; margin-bottom:16px; flex-wrap: wrap; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  input, select, button { padding:10px; border:1px solid #ccc; border-radius:8px; }
+  button { cursor:pointer; }
+  .msg { margin-left:auto; font-size:13px; min-height: 18px; }
+
+  .grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap:14px;
+    margin-top:16px;
+  }
+
+  .card {
+    border:1px solid #e1e1e1;
+    border-radius:14px;
+    padding:14px 12px;
+    background:#fff;
+    text-align:center;
+  }
+
+  /* ✅ Avatar holder centers the image perfectly */
+  .avatar-wrap{
+    width:120px;
+    height:120px;
+    margin: 0 auto;              /* center the circle */
+    border-radius:50%;
+    display:flex;                 /* center content */
+    align-items:center;           /* vertical center */
+    justify-content:center;       /* horizontal center */
+    overflow:hidden;              /* keep circle clean */
+    border:1px solid #ccc;
+    background:#f6f6f6;
+    cursor:pointer;
+  }
+
+  .avatar {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .name { margin-top:10px; font-size:14px; font-weight:600; cursor:pointer; }
+  .meta { font-size:12px; opacity:0.8; margin-top:6px; line-height: 1.4; }
+  .hint { font-size:12px; opacity:0.7; margin-top:6px; }
+  .empty { padding:16px; border:1px dashed #bbb; border-radius:10px; margin-top:16px; background:#fff; }
+</style>
+{% endblock %}
+
+{% block layout %}
+<div class="wrap">
+
+  <h2>Find Student Photos</h2>
+
+  <form method="get" class="toolbar">
+    <div class="field" style="min-width:240px;">
+      <label>Search by name or RegNo</label>
+      <input type="text" name="q" value="{{ q }}" placeholder="e.g. Adrian / S1234 / 2024-001">
+    </div>
+
+    <div class="field" style="min-width:220px;">
+      <label>Filter by class (optional)</label>
+      <select name="class_id">
+        <option value="">-- any class --</option>
+        {% for c in classes %}
+          <option value="{{ c.id }}" {% if class_id|stringformat:"s" == c.id|stringformat:"s" %}selected{% endif %}>
+            {{ c.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit">Search</button>
+    <div class="msg" id="msg"></div>
+  </form>
+
+  {% if students is None %}
+    <div class="empty">
+      Enter a <b>class</b>, <b>student name</b>, or <b>RegNo</b> and click <b>Search</b>.
+    </div>
+  {% else %}
+    {% if students %}
+      <div class="grid">
+        {% for s in students %}
+          <div class="card">
+
+            <!-- ✅ Centered avatar + "default photo tech" -->
+            <div class="avatar-wrap" onclick="pickPhoto({{ s.id }})" title="Click to update photo">
+              {% if s.photo and s.photo.name and s.photo.name != 'assets/images/default_student_photo.png' %}
+                <img
+                  class="avatar"
+                  id="img-{{ s.id }}"
+                  src="{{ s.photo.url }}"
+                  alt=""
+                />
+              {% else %}
+                <img
+                  class="avatar"
+                  id="img-{{ s.id }}"
+                  src="{% static 'assets/images/default_student_photo.png' %}"
+                  alt=""
+                />
+              {% endif %}
+            </div>
+
+            <!-- Name (clickable) -->
+            <div class="name" onclick="pickPhoto({{ s.id }})">
+              {{ s.first_name }}{% if s.other_names %} {{ s.other_names }}{% endif %}{% if s.last_name %} {{ s.last_name }}{% endif %}
+            </div>
+
+            <div class="meta">
+              RegNo: <b>{{ s.admission_number }}</b><br>
+              Class: {{ s.school_class.name|default:"-" }}
+            </div>
+
+            <div class="hint">Click name/photo to update</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">No students matched your search.</div>
+    {% endif %}
+  {% endif %}
+
+  <!-- single hidden file input for all rows -->
+  <input type="file" id="photoInput" accept="image/*" style="display:none" />
+
+</div>
+
+<script>
+  const csrfToken = "{{ csrf_token }}";
+  const photoInput = document.getElementById("photoInput");
+  const msg = document.getElementById("msg");
+
+  let currentStudentId = null;
+
+  function setMsg(text, isError=false) {
+    msg.textContent = text;
+    msg.style.color = isError ? "crimson" : "green";
+    if (text) setTimeout(() => { msg.textContent = ""; }, 3500);
+  }
+
+  function pickPhoto(studentId) {
+    currentStudentId = studentId;
+    photoInput.value = "";
+    photoInput.click();
+  }
+
+  photoInput.addEventListener("change", async () => {
+    if (!currentStudentId) return;
+    const file = photoInput.files[0];
+    if (!file) return;
+
+    const maxMB = 5;
+    if (file.size > maxMB * 1024 * 1024) {
+      setMsg("Photo too large (max 5MB).", true);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    try {
+      setMsg("Uploading...");
+      const res = await fetch(`/students/photos/upload/${currentStudentId}/`, {
+        method: "POST",
+        headers: { "X-CSRFToken": csrfToken },
+        body: formData
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Upload failed");
+      }
+
+      const data = await res.json();
+      if (data.ok) {
+        const img = document.getElementById(`img-${data.student_id}`);
+        img.src = data.photo_url + `?v=${Date.now()}`;
+        setMsg(`Updated photo for ${data.full_name} (${data.admission_number})`);
+      } else {
+        setMsg("Upload failed.", true);
+      }
+    } catch (e) {
+      setMsg(e.message || "Upload failed.", true);
+    } finally {
+      currentStudentId = null;
+    }
+  });
+</script>
+{% endblock %}

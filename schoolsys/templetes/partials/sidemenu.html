@@ -1,0 +1,176 @@
+{% load static %}
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-inner">
+        <div class="brand">
+          <div class="logo"><i class="bi bi-mortarboard-fill"></i></div>
+          <div class="d-flex flex-column">
+            <p class="title mb-0">Academia Admin</p>
+            <p class="subtitle mb-0">Management Suite</p>
+          </div>
+        </div>
+<div class="nav-section">
+  <nav class="nav flex-column gap-1">
+    <!-- Dashboard -->
+    <a class="nav-link {% block nav_dashboard_active %}{% endblock %}"
+       href="{% url 'dashboards:user_dashboard' %}">
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span>Dashboard</span>
+    </a>
+        <!-- Settings (submenu) -->
+    <div class="nav-item has-submenu">
+      <a class="nav-link submenu-toggle {% block nav_settings_active %}{% endblock %}"
+         href="#settingsMenu"
+         data-bs-toggle="collapse"
+         role="button"
+         aria-expanded="false">
+        <i class="bi bi-gear-fill"></i>
+        <span>Settings</span>
+        <i class="bi bi-chevron-down ms-auto chevron"></i>
+      </a>
+      <div class="collapse submenu" id="settingsMenu">
+        <a class="nav-link sub-link"
+           href="{% url 'profile:school_profile' %}" {% block nav_school_profile_active %}{% endblock %}>
+          <i class="bi bi-person-plus-fill"></i>
+          <span>School Profile</span>
+        </a>
+        <a class="nav-link sub-link"
+           href="{% url 'calendar:calendar' %}" {% block nav_school_calender_list_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>School Calendar</span>
+        </a>
+          <a class="nav-link sub-link"
+           href="{% url 'calendar:list_academic_years' %}" {% block nav_academic_year_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Academic Year</span>
+        </a>
+       <a class="nav-link sub-link"
+           href="{% url 'profile:list_subjects' %}" {% block nav_subjects_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Subjects</span>
+        </a>
+        <a class="nav-link sub-link"
+           href="{% url 'calendar:list_terms' %}" {% block nav_terms_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Terms</span>
+        </a>
+        <a class="nav-link sub-link"
+           href="{% url 'profile:list_levels' %}" {% block nav_levels_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Levels</span>
+        </a>
+        <a class="nav-link sub-link"
+           href="{% url 'profile:list_classes' %}" {% block nav_classes_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Classes</span>
+        </a>
+        <a class="nav-link sub-link"
+           href="{% url 'profile:list_streams' %}" {% block nav_streams_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Streams</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Students (submenu) -->
+    <div class="nav-item has-submenu">
+
+      <a class="nav-link submenu-toggle {% block nav_students_active %}{% endblock %}"
+         href="#studentsMenu"
+         data-bs-toggle="collapse"
+         role="button"
+         aria-expanded="false">
+        <i class="bi bi-people-fill"></i>
+        <span>Students</span>
+        <i class="bi bi-chevron-down ms-auto chevron"></i>
+      </a>
+
+      <div class="collapse submenu" id="studentsMenu">
+
+        <a class="nav-link sub-link"
+           href="{% url 'students:studentDetails' %}" {% block nav_student_add_active %}{% endblock %}>
+          <i class="bi bi-person-plus-fill"></i>
+          <span>Add Student</span>
+        </a>
+
+        <a class="nav-link sub-link"
+           href="{% url 'students:studentDetails' %}">
+          <i class="bi bi-list-ul"></i>
+          <span>View Students</span>
+        </a>
+
+      </div>
+    </div>
+
+        <!-- Students (submenu) -->
+    <div class="nav-item has-submenu">
+
+      <a class="nav-link submenu-toggle {% block nav_staff_active %}{% endblock %}"
+         href="#staffMenu"
+         data-bs-toggle="collapse"
+         role="button"
+         aria-expanded="false">
+        <i class="bi bi-people-fill"></i>
+        <span>Staff Management</span>
+        <i class="bi bi-chevron-down ms-auto chevron"></i>
+      </a>
+
+      <div class="collapse submenu" id="staffMenu">
+
+        <a class="nav-link sub-link"
+           href="{% url 'teachers:list_staff' %}" {% block nav_staff_list_active %}{% endblock %}>
+          <i class="bi bi-person-lines-fill"></i>
+          <span>Staff List</span>
+        </a>
+
+        <a class="nav-link sub-link"
+           href="{% url 'accounts:staff_accounts_page' %}" {% block nav_staff_account_active %}{% endblock %}>
+          <i class="bi bi-list-ul"></i>
+          <span>Staff Accounts</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Fees -->
+    <a class="nav-link {% block nav_fees_active %}{% endblock %}"
+       href="#">
+      <i class="bi bi-cash-coin"></i>
+      <span>Fees Management</span>
+    </a>
+        <!-- Fees -->
+    <a class="nav-link "
+       href="">
+      <i class="bi bi-person-badge"></i>
+      <span>Student Accessment</span>
+    </a>
+        <!-- Fees -->
+    <a class="nav-link "
+       href="">
+      <i class="bi bi-currency-dollar"></i>
+      <span>Expense Management</span>
+    </a>
+            <!-- Fees -->
+    <a class="nav-link {% block nav_system_logs_active %}{% endblock %}"
+       href="#">
+      <i class="bi bi-file-earmark-medical"></i>
+      <span>System Logs</span>
+    </a>
+
+  </nav>
+</div>
+
+
+        <div class="sidebar-footer">
+          <div class="d-flex align-items-center gap-2">
+            <div class="icon-pill" style="background: rgba(248,250,252,.10); border-color: rgba(255,255,255,.12);">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <div class="small text-white-50">
+              <div class="fw-semibold text-white">Secure Admin</div>
+              <div class="text-white-50">v1.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
