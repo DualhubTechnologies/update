@@ -45,8 +45,6 @@ class Student(models.Model):
         upload_to="student_photos/",
         blank=True,
         null=True,
-        # ✅ store a default file path only if that file actually exists in MEDIA storage
-        # If you prefer STATIC fallback, leave default=None and handle fallback in template.
         default=None,
         help_text="Upload a student photo",
     )

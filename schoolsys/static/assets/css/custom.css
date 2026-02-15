@@ -238,7 +238,7 @@ body{
 ===================================================== */
 .content{
   margin-left: var(--sidebar-w);
-  padding-top: calc(var(--topbar-h) + 1rem);
+  padding-top: var(--topbar-h);
   padding-left: 1rem;
   padding-right: 1rem;
   padding-bottom: 2rem;

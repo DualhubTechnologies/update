@@ -84,7 +84,7 @@
     <!-- Staff Table -->
     <div class="card shadow-sm">
         <div class="table-responsive">
-<table class="table display schltb">
+<table id="sysdataTable" class="table table-hover align-middle w-100">
                 <thead class="table-light">
     
         <tr>
@@ -235,9 +235,15 @@
 {% endblock %}
 
   {% block extra_js %}
+
+  {% block scripts %}
+<script>
+
+</script>
+{% endblock %}
 <script>
   // Show the datatable after search
-  if (document.getElementById('schltb').rows.length > 0) {
+  if (document.getElementById('sysdataTable').rows.length > 0) {
     document.getElementById('datatable-container').style.display = 'block';
   }
 </script>
