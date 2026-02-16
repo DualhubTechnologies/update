@@ -19,6 +19,7 @@
   --shadow: 0 10px 30px rgba(2, 6, 23, .08);
   --shadow-sm: 0 6px 18px rgba(2, 6, 23, .06);
   --border: rgba(2, 6, 23, .08);
+  --footer-h: 44px;
 }
 
 
@@ -171,9 +172,8 @@ body{
    SIDEBAR MINI MODE
 ===================================================== */
 .sidebar-mini{
-  width: 92px;
+  --sidebar-w: 92px;
 }
-
 .sidebar-mini .brand .title,
 .sidebar-mini .brand .subtitle,
 .sidebar-mini .nav-link span,
@@ -230,7 +230,7 @@ body{
   gap: 1rem;
 }
 
-.sidebar-mini ~ .topbar{ left: 92px; }
+
 
 
 /* =====================================================
@@ -238,14 +238,17 @@ body{
 ===================================================== */
 .content{
   margin-left: var(--sidebar-w);
-  padding-top: var(--topbar-h);
+  padding-top: calc(var(--topbar-h) + 1rem);
   padding-left: 1rem;
   padding-right: 1rem;
   padding-bottom: 2rem;
   transition: margin-left .2s ease;
+  padding-bottom: var(--footer-h);
+
+  
 }
 
-.sidebar-mini ~ .content{ margin-left: 92px; }
+
 
 
 /* =====================================================
@@ -262,10 +265,14 @@ body{
   .topbar{ left: 0; }
   .content{ margin-left: 0; }
 
-  .sidebar-mini{ width: var(--sidebar-w); }
+
   .sidebar-mini ~ .topbar{ left: 0; }
   .sidebar-mini ~ .content{ margin-left: 0; }
+
+
+
 }
+
 
 
 /* =====================================================
@@ -466,4 +473,21 @@ body{
 /* Prevent flex shrinking icons */
 .sidebar .nav-link i {
   flex-shrink: 0;
+}
+
+.admin-footer-fixed {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: calc(100% - var(--sidebar-w));
+    height: var(--footer-h);
+    display: flex;
+    align-items: center;
+
+    background-color: var(--bg);
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+
+    padding: 0 1rem;
+    z-index: 1030;
 }

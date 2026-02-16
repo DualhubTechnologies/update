@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import (addstudent, class_gender_statistics_data, get_student_info, load_streams, parent_guardian_add, parent_guardian_delete, parent_guardian_edit, student_list, studentProfile,
+from .views import (addstudent, class_gender_statistics_data, generate_admission_letter, get_student_info, list_admissions, load_streams, parent_guardian_add, parent_guardian_delete, parent_guardian_edit, student_list, studentProfile,
                     student_edit,student_delete,
                     edit_student, delete_student, studentDetails, student_photo_upload, student_photo_search,  upload_students_excel_json)
 from .views import EnrolmentSummary 
@@ -46,6 +46,13 @@ urlpatterns = [
     path('guardians/<int:guardian_id>/edit/',parent_guardian_edit,name='parent_guardian_edit'),
     path('guardians/<int:guardian_id>/delete/', parent_guardian_delete, name='parent_guardian_delete'),
 
+    path(
+        "<int:student_id>/admission-letter/",
+        generate_admission_letter,
+        name="generate_admission_letter",
+    ),
+
+    path("list_admissions", list_admissions, name='list_admissions')
     # dashboard URLS
 
 

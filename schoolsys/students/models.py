@@ -125,6 +125,25 @@ class StudentSubject(models.Model):
         # NOTE: your FK is to Subject; your old code used class_subject.subject.name (likely wrong)
         # Adjust based on your Subject model fields.
         return f"{self.student.full_name} → {self.class_subject}"
+    
+
+class AdmissionLetter(models.Model):
+    student = models.OneToOneField(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="admission_letter"
+    )
+    generated_at = models.DateTimeField(auto_now_add=True)
+    reference_number = models.CharField(max_length=100, unique=True)
+    pdf_file = models.FileField(
+        upload_to="admission_letters/",
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return f"Admission Letter - {self.student.admission_number}"
+
 
 class ParentGuardian(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="guardians")

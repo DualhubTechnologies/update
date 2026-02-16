@@ -10,6 +10,13 @@ from django.views.decorators.http import require_POST
 from django_currentuser.middleware import _set_current_user
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.http import HttpResponse
+from schoolprofile.models import SchoolProfile
+
 
 
 app_name = "students"
@@ -57,7 +64,7 @@ def studentDetails(request):
         students = students.filter(status=filters['status'])
 
     # 🔹 PAGINATION
-    paginator = Paginator(students, 100)  # 10 students per page
+    paginator = Paginator(students, 200)  # 10 students per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -393,4 +400,26 @@ def parent_guardian_delete(request, guardian_id):
     return redirect('students:parent_guardians', student_id=student_id)
 
 
+def generate_admission_letter(request, student_id):
+    student = Student.objects.get(id=student_id)
 
+    school = SchoolProfile.objects.first()  # singleton pattern
+
+    template = get_template("letters/admission_letter.html")
+    html = template.render({
+        "student": student,
+        "school": school,
+    })
+
+    response = HttpResponse(content_type="application/pdf")
+    response['Content-Disposition'] = (
+        f'attachment; filename="Admission_{student.full_name}.pdf"'
+    )
+
+    pisa.CreatePDF(html, dest=response)
+
+    return response
+
+@login_required
+def list_admissions(request):
+    return render(request, 'students/listadmissions.html')

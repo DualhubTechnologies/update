@@ -84,9 +84,8 @@
     <!-- Staff Table -->
     <div class="card shadow-sm">
         <div class="table-responsive">
-<table id="sysdataTable" class="table table-hover align-middle w-100">
+        <table id="sysdataTable" class="table table-hover align-middle w-100">
                 <thead class="table-light">
-    
         <tr>
             <th>#</th>
             <th>Photo</th>
@@ -197,6 +196,12 @@
                             <a class="dropdown-item"
                                href="{% url 'students:parent_guardians' student.id %}">
                                 <i class="ti ti-user me-1"></i> Manage Parents/Guardians
+                            </a>
+                        </li>
+                                                                        <li>
+                            <a class="dropdown-item"
+                               href="{% url 'students:generate_admission_letter' student.id %}">
+                                <i class="ti ti-file me-1"></i> Generate Admission Letter
                             </a>
                         </li>
 

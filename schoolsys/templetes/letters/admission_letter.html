@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        .header { text-align: center; }
+        .logo { height: 80px; }
+        .section { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    {% if school.logo %}
+        <img src="{{ school.logo.path }}" class="logo" />
+    {% endif %}
+
+    <h2>{{ school.motto }}</h2>
+
+    <p>
+        {{ school.address }},
+        {{ school.district }},
+        {{ school.region }}
+    </p>
+
+    <p>
+        Tel: {{ school.contact_phone }} |
+        Email: {{ school.contact_email }}
+    </p>
+</div>
+
+<hr/>
+
+<div class="section">
+    <p>Date: {{ student.admission_date }}</p>
+
+    <p>Dear Parent/Gaurdian,</p>
+
+    <p>
+        We are pleased to inform you that
+        <strong>{{ student.full_name }}</strong>
+        has been admitted to
+        <strong>{{ student.school_class }}</strong>
+        as a {{ student.student_type }} student.
+    </p>
+
+    <p>
+        Admission Number: {{ student.admission_number }}<br/>
+        Level: {{ student.level }}
+    </p>
+
+    <p>
+        We congratulate you and welcome you to {{ school.motto }}.
+    </p>
+</div>
+
+</body>
+</html>

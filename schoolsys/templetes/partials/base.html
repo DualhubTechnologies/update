@@ -19,12 +19,13 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <div class="app-shell">
+  <div class="app-shell sidebar-mini">
     {% include 'partials/navbar.html' %}
     {% include 'partials/sidemenu.html' %}  
     <main class="content">
       {% block layout %}{% endblock %}
     </main>
+    {% include 'partials/footer.html' %}
   </div>
 
   <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>

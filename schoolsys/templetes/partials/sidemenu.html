@@ -92,6 +92,11 @@
           <i class="bi bi-person-plus-fill"></i>
           <span>Add Student</span>
         </a>
+        <a class="nav-link sub-link"
+           href="{% url 'students:list_admissions' %}" {% block nav_student_admissions_active %}{% endblock %}>
+          <i class="bi bi-person-plus-fill"></i>
+          <span>Admissions</span>
+        </a>
 
         <a class="nav-link sub-link"
            href="{% url 'students:studentDetails' %}">
